@@ -30,9 +30,13 @@ async function exibirPesquisa(evento){
         // console.log(evento.target.value)
         // console.log('Olá Mundo')
         const contatos = await getContatosPorNome(evento.target.value)
-        document,getElementById('container').replaceChildren()
+        document.getElementById('container').replaceChildren()
         contatos.forEach(criarCard)
     }
+}
+
+function preview ({target}){
+    document.getElementById('preview-image').src = URL.createObjectURL(target.files[0])
 }
 
 function cadastrarContato (){
@@ -82,3 +86,6 @@ document.getElementById('cancelar')
 
 document.getElementById('salvar')
         .addEventListener('click', salvarContato)
+
+document.getElementById('foto')
+        .addEventListener('change', preview)
