@@ -1,6 +1,7 @@
 'use strict'
 
 import { getContatos, getContatosPorNome, postContato } from "./contatos.js"
+import { uploadImageToAzure } from "./uploadImageToAzure.js"
 
 function criarCard (contato){
     // console.log(contato)
@@ -43,14 +44,23 @@ function voltarHome (){
 }
 
 async function salvarContato(){
+
+    const uploadParams = {
+        file: document.getElementById('foto').files[0],
+        storageAccount: 'tutorialuploadgiovanna',
+        sasToken: 'sp=racwl&st=2025-05-15T17:14:38Z&se=2025-05-16T01:14:38Z&sv=2024-11-04&sr=c&sig=rEpWrvi2YkHI8mcrHpUsYQ%2FGXppnqldfIeJ1GskHHC4%3D',
+        containerName: 'fotos',
+    };
+
     const contato = {
         "nome": document.getElementById('nome').value,
         "celular": document.getElementById('celular').value,
-        "foto": document.getElementById('foto').value,
+        "foto": await uploadImageToAzure(uploadParams),
         "email": document.getElementById('email').value,
         "endereco": document.getElementById('endereco').value,
         "cidade": document.getElementById('cidade').value
     }
+
     if(await postContato(contato)){
         await exibirContatos()
         voltarHome()
